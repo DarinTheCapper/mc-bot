@@ -5,20 +5,33 @@ const http = require('http');
 // 1. MINECRAFT BOT CONFIGURATION
 // ==========================================
 const bot = mineflayer.createBot({
-  host: 'capcraftmc.aternos.me', // <-- Put your server IP here (e.g., 'my-server.aternos.me')
-  port: 50597,            // Default Minecraft port
-  username: 'Diddy', // The username your bot will use
-  version: false          // 'false' allows mineflayer to auto-detect the server version
+  host: 'capcraftmc.aternos.me', // <-- Make sure to put your server IP here
+  port: 50597,
+  username: 'Diddy',
+  version: false
 });
+
+let afkInterval;
 
 // Log when the bot successfully logs into the server
 bot.on('spawn', () => {
   console.log('🤖 Bot has successfully joined the Minecraft server!');
+  
+  // ANTI-AFK FEATURE: Jumps every 60 seconds to prevent getting kicked
+  clearInterval(afkInterval); // Clear any old intervals
+  afkInterval = setInterval(() => {
+    if (bot && bot.entity) {
+      bot.setControlState('jump', true);
+      setTimeout(() => {
+        if (bot && bot.entity) bot.setControlState('jump', false);
+      }, 500);
+      console.log('🦘 Anti-AFK Jump triggered.');
+    }
+  }, 60000); // 60000ms = 1 minute
 });
 
-// A simple educational chat feature: responds when someone says "hello"
+// Simple chat responder
 bot.on('chat', (username, message) => {
-  // Prevent the bot from responding to itself
   if (username === bot.username) return;
 
   if (message.toLowerCase() === 'hello') {
@@ -26,18 +39,21 @@ bot.on('chat', (username, message) => {
   }
 });
 
-// Handle errors so the script doesn't crash entirely
+// Handle errors
 bot.on('error', (err) => {
   console.error('Error encountered:', err);
 });
 
-// Automatically try to reconnect if kicked or disconnected
-bot.on('end', () => {
-  console.log('Disconnected from server. Reconnecting in 10 seconds...');
+// Automatically try to reconnect safely if kicked
+bot.on('end', (reason) => {
+  console.log(`Disconnected from server. Reason: ${reason}`);
+  clearInterval(afkInterval); // Stop trying to jump while offline
+  
+  console.log('Reconnecting in 15 seconds...');
   setTimeout(() => {
-    // Exiting the process tells the cloud platform to restart the script immediately
+    // Force exit so Render fully restarts the script container cleanly
     process.exit(1); 
-  }, 10000);
+  }, 15000);
 });
 
 // ==========================================
