@@ -5,8 +5,8 @@ let bot;
 let afkInterval;
 
 // Put the server IP or a direct numerical IP address here
-const SERVER_HOST = 'mc.herobrine.org'; 
-const SERVER_PORT = 25565;
+const SERVER_HOST = 'capcraftmc.aternos.me'; 
+const SERVER_PORT = 50597;
 
 function createMinecraftBot() {
   console.log('⏳ Waiting 5 seconds for network stabilization...');
@@ -17,7 +17,7 @@ function createMinecraftBot() {
     bot = mineflayer.createBot({
       host: SERVER_HOST,
       port: SERVER_PORT,
-      username: 'EduBot_247',
+      username: 'Diddy',
       version: false
     });
 
