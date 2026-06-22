@@ -5,7 +5,7 @@ const http = require('http');
 // 1. MINECRAFT BOT CONFIGURATION
 // ==========================================
 const bot = mineflayer.createBot({
-  host: 'public.mineflayer.com', // <-- Make sure to put your server IP here
+  host: 'mc.herobrine.org', // <-- Make sure to put your server IP here
   port: 50597,
   username: 'Diddy',
   version: false
