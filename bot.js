@@ -5,8 +5,8 @@ let bot;
 let afkInterval;
 
 // Put the server IP or a direct numerical IP address here
-const SERVER_HOST = 'capcraftmc.aternos.me'; 
-const SERVER_PORT = 50597;
+const SERVER_HOST = 'anarchymc.org'; // A standard public server that allows datacenter traffic
+const SERVER_PORT = 25565;
 
 function createMinecraftBot() {
   console.log('⏳ Waiting 5 seconds for network stabilization...');
